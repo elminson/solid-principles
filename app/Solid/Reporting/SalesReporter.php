@@ -15,7 +15,7 @@ class SalesReporter
 	 *
 	 * @throws Exception
 	 */
-	private function between($startDate, $endDated)
+	public function between($startDate, $endDated)
 	{
 
 		// perform authentication
