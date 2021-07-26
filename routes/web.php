@@ -22,4 +22,5 @@ Route::get('/', function () {
 Route::get('/sales/report', function () {
 
 });
-Route::get('/sales/report/{startDate}/{endDated}', [SalesController::class, 'between']);
+Route::get('/sales/report/total/{startDate}/{endDated}', [SalesController::class, 'total']);
+Route::get('/sales/report/average/{startDate}/{endDated}', [SalesController::class, 'average']);

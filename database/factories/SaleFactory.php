@@ -26,7 +26,7 @@ class SaleFactory extends Factory
 		return [
 			'description' => $this->faker->name(),
 			'charge' => rand(100, 1000),
-			'created_at' => "2021-07-20"
+			'created_at' => "2021-07-" . rand(1, 30)
 		];
 	}
 

@@ -2,54 +2,56 @@
 
 namespace App\Solid\Reporting;
 
+use App\Solid\Repositories\SalesRepository;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class SalesReporter
 {
 
 	/**
-	 * @param $startDate
-	 * @param $endDated
-	 *
-	 * @throws Exception
+	 * @var SalesRepository
 	 */
-	public function between($startDate, $endDated)
+	private $repo;
+
+	public function __construct(SalesRepository $repo)
 	{
 
-		// perform authentication
-		// if (!Auth::check()) {
-		// 	throw new Exception('Authentication required for reporting');
-		// }
+		$this->repo = $repo;
+	}
+
+	/**
+	 * @param                      $startDate
+	 * @param                      $endDate
+	 * @param SalesOutputInterface $formater
+	 *
+	 * @return mixed
+	 */
+	public function total($startDate, $endDate, SalesOutputInterface $formater)
+	{
 
 		// get sales from db
-		$sales = $this->queryDBforSalesBetween($startDate, $endDated);
+		$sales = $this->repo->total($startDate, $endDate);
 
 		// return results
-		return $this->format($sales);
+		return $formater->output($startDate, $endDate, $sales);
 	}
 
 	/**
-	 * @param $startDate
-	 * @param $endDate
-	 */
-	private function queryDBforSalesBetween($startDate, $endDate)
-	{
-
-		return DB::table('sales')->whereBetween('created_at', [$startDate, $endDate])->sum('charge') / 100;
-
-	}
-
-	/**
-	 * @param float $sales
+	 * @param                      $startDate
+	 * @param                      $endDate
+	 * @param SalesOutputInterface $formater
 	 *
-	 * @return string
+	 * @return mixed
 	 */
-	private function format(float $sales)
+	public function average($startDate, $endDate, SalesOutputInterface $formater)
 	{
 
-		return "<h1>Sales : $sales</h1>";
+		// get sales from db
+		$sales = $this->repo->average($startDate, $endDate);
+
+		// return results
+		return $formater->output($startDate, $endDate, $sales);
 	}
 
 }
